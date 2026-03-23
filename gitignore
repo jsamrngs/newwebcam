@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.log
+*.avi
+*.jpg
+webmedia/
+config.json
