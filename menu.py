@@ -11,7 +11,7 @@ from detector import DetectorPersonas
 class MenuPrincipal:
     def __init__(self, root):
         self.root = root
-        self.root.title("Cámara - Justhin")
+        self.root.title("Cámara - usb")
         self.root.geometry("800x600")
         self.root.resizable(False, False)
 
