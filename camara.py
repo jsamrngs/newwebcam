@@ -165,10 +165,10 @@ class CamaraUI:
         self.enviar_telegram(ruta)
 
 
-
+# TU BOT DE TELEGRAM!!!! 
     def enviar_telegram(self, ruta_foto):
-        TOKEN = "8747525842:AAFilTKQkr-gysnsK8OsCbksO_t_P_8zbK0"
-        CHAT_ID = "1601321503"
+        TOKEN = "XXXX:XXXX" # <--- TOKEN Y CHAT-ID DE TELEGRAM
+        CHAT_ID = "99999999" 
 
         url = f"https://api.telegram.org/bot{TOKEN}/sendPhoto"
 
