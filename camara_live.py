@@ -3,9 +3,39 @@ import cv2
 
 app = Flask(__name__)
 
-CAMERA_SOURCE = 0
+# ---------------------------------------------------------
+# DETECCIÓN AUTOMÁTICA DE CÁMARAS (PRIORIDAD USB)
+# ---------------------------------------------------------
+def detectar_camaras():
+    camaras = []
+    for i in range(10):  # prueba hasta 10 cámaras
+        cap = cv2.VideoCapture(i)
+        if cap.isOpened():
+            camaras.append(i)
+            cap.release()
+    return camaras
+
+def seleccionar_camara_usb():
+    indices = detectar_camaras()
+
+    if not indices:
+        raise Exception("No se detectaron cámaras en este equipo.")
+
+    # Si hay más de una, la última suele ser la USB
+    if len(indices) > 1:
+        print(f"[INFO] Cámaras detectadas: {indices} → usando la última (USB)")
+        return indices[-1]
+
+    print(f"[INFO] Solo una cámara detectada: {indices[0]}")
+    return indices[0]
+
+# Selección automática
+CAMERA_SOURCE = seleccionar_camara_usb()
 cap = cv2.VideoCapture(CAMERA_SOURCE)
 
+# ---------------------------------------------------------
+# STREAMING MJPEG
+# ---------------------------------------------------------
 def generar_frames():
     while True:
         ret, frame = cap.read()
@@ -19,7 +49,9 @@ def generar_frames():
                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
 
-# Página responsiva
+# ---------------------------------------------------------
+# PÁGINA RESPONSIVA
+# ---------------------------------------------------------
 HTML_PAGE = """
 <!DOCTYPE html>
 <html lang="es">
@@ -44,7 +76,6 @@ HTML_PAGE = """
         object-fit: contain;
     }
 
-    /* Para pantallas muy pequeñas */
     @media (max-width: 600px) {
         img {
             width: 100vw;
